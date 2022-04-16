@@ -1,6 +1,6 @@
 import random
-from datetime import datetime
 import string
+from datetime import datetime
 from typing import Any
 from typing import List
 from uuid import uuid4
@@ -75,7 +75,7 @@ class Database:
         WHERE hash = %s
         """
         self.cursor.execute(query, (_hash,))
-        result = self.cursor.fetchone()
+        result = self.cursor.fetchone()[0]
         return result
 
     def get_urls(self, api_key: str) -> List[Shawty]:
