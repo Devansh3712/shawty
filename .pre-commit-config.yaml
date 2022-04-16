@@ -1,0 +1,29 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.1.0
+    hooks:
+      - id: check-ast
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: fix-byte-order-marker
+      - id: mixed-line-ending
+      - id: trailing-whitespace
+
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v3.0.1
+    hooks:
+      - id: reorder-python-imports
+        args: [--application-directories=.:torweather, --py39-plus]
+
+  - repo: https://github.com/asottile/pyupgrade
+    rev: v2.31.1
+    hooks:
+      - id: pyupgrade
+
+  - repo: local
+    hooks:
+      - id: requirements
+        name: make-requirements
+        entry: make reqs
+        language: system
+        types: [python]
