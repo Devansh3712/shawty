@@ -1,5 +1,7 @@
 PY = venv\Scripts\python
 
+all: run
+
 clean:
 	$(PY) -m pyclean .
 

@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}shawty - Home{% endblock %} {% block
+content %}
+<body>
+  <div class="main">
+    <center>
+      <div class="name">shawty</div>
+      <p>URL shortener</p>
+      <br />
+      <br />
+    </center>
+    <form name="url" action="/" method="POST">
+      <input type="text" name="url" size="60" />
+      <br />
+      <br />
+      <center>
+        <button type="submit">Shorten</button>
+        <br />
+        <br />
+        {% if short_url %} {{ short_url }}{% endif %}
+      </center>
+    </form>
+  </div>
+</body>
+{% endblock %}

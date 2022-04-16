@@ -9,7 +9,7 @@ from pydantic import EmailStr
 from shawty.database import Database
 from shawty.utils.auth import auth_header
 
-user = APIRouter(prefix="/user")
+user = APIRouter(prefix="/api/user")
 db = Database()
 
 
