@@ -66,7 +66,7 @@ class Database:
         WHERE hash = %s
         """
         self.cursor.execute(query, (_hash,))
-        result = self.cursor.fetchone()[0]
+        result = self.cursor.fetchone()
         return result
 
     def get_url(self, _hash: str) -> str:
@@ -75,18 +75,28 @@ class Database:
         WHERE hash = %s
         """
         self.cursor.execute(query, (_hash,))
-        result = self.cursor.fetchone()[0]
+        result = self.cursor.fetchone()
         return result
 
     def get_urls(self, api_key: str) -> List[Shawty]:
         query = """
-        SELECT url, hash, timestamp, visits
+        SELECT url, hash, urls.timestamp, visits
         FROM users, urls
-        WHERE users.email = urls.email
+        WHERE users.api_key = urls.api_key
         AND users.api_key = %s
         """
         self.cursor.execute(query, (api_key,))
-        result = [Shawty(**data[0]) for data in self.cursor.fetchall()]
+        response = self.cursor.fetchall()
+        result: List[Shawty] = []
+        for data in response:
+            result.append(
+                Shawty(
+                    **{
+                        key: data[index]
+                        for index, key in enumerate(Shawty.__fields__.keys())
+                    }
+                )
+            )
         return result
 
     def get_user(self, api_key: str) -> List[str]:
@@ -96,7 +106,7 @@ class Database:
         WHERE api_key = %s
         """
         self.cursor.execute(query, (api_key,))
-        result = self.cursor.fetchone()[0]
+        result = self.cursor.fetchone()
         return result
 
     @staticmethod
