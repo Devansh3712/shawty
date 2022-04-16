@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "shawty"
+version = "0.1.0"
+description = "URL shortener"
+authors = ["Devansh3712 <devanshamity@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = {extras = ["all"], version = "^0.75.1"}
+Jinja2 = "^3.1.1"
+pydantic = {extras = ["email", "dotenv"], version = "^1.9.0"}
+psycopg2 = "^2.9.3"
+
+[tool.poetry.dev-dependencies]
+black = "^22.3.0"
+pyclean = "^2.2.0"
+pre-commit = "^2.18.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
