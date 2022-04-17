@@ -54,5 +54,5 @@ async def url_data(request: Request, hash: str):
         return templates.TemplateResponse("404.html", {"request": request})
     data = db.get_url_data(hash)
     return templates.TemplateResponse(
-        "index.html", {"request": request, "url_data": data}
+        "data.html", {"request": request, "url_data": data.dict()}
     )

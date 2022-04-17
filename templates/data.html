@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% block title %}shawty - Data{% endblock %} {% block
+content %}
+<body>
+  <div class="data">
+    <center>
+      <p>shawty URL data</p>
+      <br />
+      <br />
+      <table>
+        {% for data in url_data %}
+        <tr>
+          <td>{{ data }}</td>
+          <td>{{ url_data[data] }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </center>
+  </div>
+</body>
+{% endblock %}

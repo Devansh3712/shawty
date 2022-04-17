@@ -88,3 +88,20 @@ button:hover {
     color: rgb(28, 248, 219);
     cursor: pointer;
 }
+
+.data {
+    position: fixed;
+    top: 35%;
+    left: 30%;
+}
+
+table {
+    font-family: inherit;
+    font-size: 24px;
+}
+
+tr:nth-child(even){background-color: #313131;}
+
+td {
+    padding-right: 50px;
+}
