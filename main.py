@@ -10,11 +10,11 @@ from fastapi.responses import HTMLResponse
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import EmailStr
 
+from shawty.auth import auth_header
 from shawty.config import secrets
 from shawty.database import Database
-from shawty.routers.user import user
-from shawty.utils.auth import auth_header
 
 
 app = FastAPI()
@@ -25,7 +25,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-app.include_router(user)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 db = Database()
 templates = Jinja2Templates(directory="templates")
@@ -59,3 +58,26 @@ async def new_url(*, api_key: str = Depends(auth_header), request: Request, url:
     _hash = db.new_url(api_key, url)
     response = {"url": str(request.base_url) + _hash, "timestamp": datetime.utcnow()}
     return response
+
+
+@app.post("/api/user/new")
+async def new_api_key(email: EmailStr):
+    if email in db.get_emails():
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Email already registered with service.",
+        )
+    api_key: str = db.new_user(email)
+    return {
+        "data": f"{email} registered successfully.",
+        "api_key": api_key,
+        "timestamp": datetime.utcnow(),
+    }
+
+
+@app.get("/api/user/data")
+async def get_user_data(api_key: str = Depends(auth_header)):
+    user = db.get_user(api_key)
+    urls = db.get_urls(api_key)
+    result = {"email": user[0], "created": user[1], "urls": urls}
+    return result

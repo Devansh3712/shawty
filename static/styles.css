@@ -76,3 +76,15 @@ button:hover {
     transition: ease-in 170ms;
     cursor: pointer;
 }
+
+.link {
+    font-size: 18pt;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: rgb(28, 248, 219);
+}
+
+.link a {
+    color: rgb(28, 248, 219);
+    cursor: pointer;
+}

@@ -41,6 +41,14 @@ class Database:
         )
         """
         self.cursor.execute(urls)
+        try:
+            root = """
+            INSERT INTO users (email, api_key, timestamp)
+            VALUES (%s, %s, %s)
+            """
+            self.cursor.execute(root, ("root", secrets.API_KEY, datetime.utcnow()))
+        except:
+            ...
 
     def get_emails(self) -> List[str]:
         query = """SELECT email FROM users"""
@@ -115,7 +123,7 @@ class Database:
         _hash = [random.choice(chars) for _ in range(5)]
         return "".join(_hash)
 
-    def new_key(self, email: str) -> str:
+    def new_user(self, email: str) -> str:
         if email in self.get_emails():
             raise
         api_key: str = uuid4().hex
