@@ -53,6 +53,16 @@ async def redirect(request: Request, hash: str):
     return RedirectResponse(url)
 
 
+@app.get("/data/{hash}", response_class=HTMLResponse)
+async def url_data(request: Request, hash: str):
+    if hash not in db.get_hashes():
+        return templates.TemplateResponse("404.html", {"request": request})
+    data = db.get_url_data(hash)
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "url_data": data}
+    )
+
+
 @app.post("/api/new")
 async def new_url(*, api_key: str = Depends(auth_header), request: Request, url: str):
     _hash = db.new_url(api_key, url)

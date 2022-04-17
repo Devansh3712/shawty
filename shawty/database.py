@@ -1,7 +1,6 @@
 import random
 import string
 from datetime import datetime
-from typing import Any
 from typing import List
 from uuid import uuid4
 
@@ -68,14 +67,16 @@ class Database:
         result = [data[0] for data in self.cursor.fetchall()]
         return result
 
-    def get_url_data(self, _hash: str) -> List[Any]:
+    def get_url_data(self, _hash: str) -> Shawty:
         query = """
-        SELECT * FROM urls
+        SELECT url, hash, timestamp, visits FROM urls
         WHERE hash = %s
         """
         self.cursor.execute(query, (_hash,))
         result = self.cursor.fetchone()
-        return result
+        return Shawty(
+            **{key: result[index] for index, key in enumerate(Shawty.__fields__.keys())}
+        )
 
     def get_url(self, _hash: str) -> str:
         query = """
