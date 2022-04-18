@@ -16,7 +16,9 @@ content %}
         <button type="submit">Shorten</button>
         <br />
         <br />
-        {% if short_url %}
+        {% if error %}
+        <p><i class="fa-solid fa-xmark"></i>&nbsp;&nbsp;{{ error }}</p>
+        {% endif %} {% if short_url %}
         <p class="link"><a href="{{ short_url }}">{{ short_url }}</a></p>
         {% endif %}
       </center>
