@@ -10,9 +10,15 @@ from pydantic import EmailStr
 
 from shawty.auth import auth_header
 from shawty.database import Database
+from shawty.schema import Shawty
 
 api = APIRouter(prefix="/api", tags=["shawty API"])
 db = Database()
+
+
+@api.get("/")
+async def root():
+    return {"data": "shawty API is working.", "Source code": "https://github.com/Devansh3712/shawty", "timestamp": datetime.now()}
 
 
 @api.post("/new")
@@ -27,10 +33,24 @@ async def new_url(*, api_key: str = Depends(auth_header), request: Request, url:
         re.IGNORECASE,
     )
     if not (re.match(regex, url) is not None):
-        return {"message": "Invalid URL."}
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Invalid URL."
+        )
     _hash = db.new_url(api_key, url)
     response = {"url": str(request.base_url) + _hash, "timestamp": datetime.utcnow()}
     return response
+
+
+@api.get("/data/{hash}", response_model=Shawty)
+async def url_data(*, api_key: str = Depends(auth_header), request: Request, hash: str):
+    if hash not in db.get_hashes():
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Hash not found in database."
+        )
+    data = db.get_url_data(hash)
+    return data
 
 
 @api.post("/user/new")
